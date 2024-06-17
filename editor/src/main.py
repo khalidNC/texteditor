@@ -1,7 +1,7 @@
 '''
   This page will responsible to run the application.
   It create the TK instance.
-  Then call the class and statr main function.
+  Then call the class and start main function.
 '''
 
 from tkinter import *
