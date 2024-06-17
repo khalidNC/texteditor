@@ -11,7 +11,7 @@
 '''
 
 from tkinter import *
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 class SimpleTextEditor:
   
@@ -38,7 +38,7 @@ class SimpleTextEditor:
 
     # Created button instances for Open and Save As buttons inside the button frame
     self.btn_open = Button(self.frame_for_buttons, text="Open", command=self.open_file)
-    self.btn_save = Button(self.frame_for_buttons, text="Save As...")
+    self.btn_save = Button(self.frame_for_buttons, text="Save As...", command=self.save_as)
     # edit_save = Button(frm_buttons, text="Edit and Save")
 
     # Now use the grid function to layout the buttons. Button are on East-West corner in 2 rows and in 1 coumn.
@@ -77,4 +77,26 @@ class SimpleTextEditor:
         # insert the text now into the text field, this is how the text from the file shows in the text editor text input area.
         self.text_field.insert(END, text)
     # Now make a dynamic change in the window title. Like when the file is open it show the filepath along with the title.
+    self.window.title(f"Simple Text Editor - {filepath}")
+
+  def save_as(self):
+    '''
+    This function does:
+    1. Created asksaveasfilename class instance it returs filepath.
+    2. Then check if filepath is flase, means if user close the window without saving. then this returns nothing.
+    3. open the file as output_file using open(), a built-in function that takes filepath, read mode, and translate text to machine readable using utf-8
+    '''
+    filepath = asksaveasfilename(
+        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
+    )
+
+    if not filepath:
+        return
+
+    with open(filepath, mode="w", encoding="utf-8") as output_file:
+        # Get all the text in the input text editor and store in text variable.
+        text = self.text_field.get("1.0", END)
+        # Write the text to the output file
+        output_file.write(text)
+    # Now make a dynamic change in the window title. After the file is saved it show the filepath along with the title.
     self.window.title(f"Simple Text Editor - {filepath}")
