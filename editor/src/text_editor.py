@@ -5,12 +5,38 @@
     1. Open - which will iventually open a file from the user's computer.
     2. Save as... button save the a text file in the user's computer.
     and 1 text input field. In this area users can able to write text and can able to save.
-
 '''
-import tkinter as tk
 
 from tkinter import *
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
+# Defined a funtion called open_file() to open a dialog box to open a file from the user's computer.
+def open_file():
+  '''
+    This function does:
+    1. Open dialog box to open the file from the user's computer using a built-in function askopenfilename() and store the filepath in avariable,
+    2. Check if filepath is none, means if user close the open file dialog box then it return nothing.
+    3. Delete all the text in the text field to clear the current window.
+    4. open the file as input_file using open(), a built-in function that takes filepath, read mode, and translate text to machine readable using utf-8
+  '''
+  filepath = askopenfilename(
+    filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
+  )
+
+  if not filepath:
+    return
+  
+  text_field.delete("1.0", END)
+
+  with open(filepath, mode="r", encoding="utf-8") as input_file:
+    # read the file that is opned and store in a variable, text
+    text = input_file.read()
+    # insert the text now into the text field, this is how the text from the file shows in the text editor text input area.
+    text_field.insert(END, text)
+  # Now make a dynamic change in the window title. Like when the file is open it show the filepath along with the title.
+  window.title(f"Simple Text Editor - {filepath}")
+
+  
 # Created a window and having a title
 window = Tk()
 window.title("Simple Text Editor")
@@ -32,7 +58,7 @@ frame_for_buttons = Frame(window, relief=RAISED, border=2)
 
 
 # Created button instances for Open and Save As buttons inside the button frame
-btn_open = Button(frame_for_buttons, text="Open")
+btn_open = Button(frame_for_buttons, text="Open", command=open_file)
 btn_save = Button(frame_for_buttons, text="Save As...")
 # edit_save = Button(frm_buttons, text="Edit and Save")
 
